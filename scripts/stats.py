@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """統計考研專區筆記的 frontmatter，輸出 JSON。唯讀，不會修改任何檔案。
 
-用法: python stats.py "<筆記根目錄>"
+用法: python3 stats.py "<筆記根目錄>"
 """
 import json
 import re
@@ -35,7 +35,9 @@ def to_int(v):
 def main():
     if len(sys.argv) < 2:
         sys.exit("用法: stats.py <考研專區路徑>")
-    root = Path(sys.argv[1])
+    root = Path(sys.argv[1]).expanduser()
+    if not root.is_dir():
+        sys.exit(f"找不到資料夾: {root}")
     notes, skipped = [], []
     for p in root.rglob("*.md"):
         rel = p.relative_to(root)
